@@ -3,12 +3,14 @@ import Image from 'next/image';
 import React, { useEffect } from 'react';
 import { GET_PHOTO } from '../graphql/queries';
 import { Conversation } from '../types';
+import { OnlineStatus } from './OnlineStatus';
 
 interface Props {
     conversation: Conversation;
+    status: string;
 }
 
-export const RecentCard = ({ conversation }: Props) => {
+export const RecentCard = ({ conversation, status }: Props) => {
     const [getPhoto, { data: photoData, loading: photoLoading }] = useLazyQuery(GET_PHOTO, { variables: { username: conversation.participants[0] } });
 
     useEffect(() => {
@@ -24,8 +26,11 @@ export const RecentCard = ({ conversation }: Props) => {
             </div>
 
             <div className='flex-grow px-4 flex justify-between h-[80px]'>
-                <div className='flex flex-col pt-2'>
-                    <p className='text-lg text-cyan-400 font-bold'>{conversation.participants}</p>
+                <div className='flex flex-col space-y-1 pt-2'>
+                    <div className='flex space-x-3 items-center'>
+                        <p className='text-lg text-cyan-400 font-bold'>{conversation.participants}</p>
+                        <OnlineStatus status={status} />
+                    </div>
                     <p className='text-xs text-gray-300 font-bold max-w-[200px] max-h-[30px] overflow-hidden text-ellipsis max-2-lines'>
                         {conversation.messages[0].content}
                     </p>

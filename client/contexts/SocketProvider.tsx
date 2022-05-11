@@ -9,15 +9,16 @@ export function useSocket() {
 
 interface Params {
     id: string;
+    status: string;
     children: ReactNode;
 }
 
-export function SocketProvider({ id, children }: Params) {
+export function SocketProvider({ id, status, children }: Params) {
     const [socket, setSocket] = useState<Socket>();
 
     useEffect(() => {
         const newSocket = io('http://localhost:4000', {
-            query: { id },
+            query: { id, status },
             timeout: 10001,
             transports: ['websocket'],
         });
@@ -27,7 +28,7 @@ export function SocketProvider({ id, children }: Params) {
         return () => {
             newSocket.close();
         };
-    }, [id]);
+    }, [id, status]);
 
     return <SocketContext.Provider value={socket}>{children}</SocketContext.Provider>;
 }

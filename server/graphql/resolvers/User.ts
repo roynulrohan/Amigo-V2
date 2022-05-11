@@ -70,6 +70,10 @@ export const UserResolver = {
         updatePhoto: async (_, { url }, context) => {
             const token = context.req.headers.authorization;
 
+            if (!token) {
+                throw new AuthenticationError('Invalid Token');
+            }
+
             const authResult = verifyToken({ token: token.split(' ')[1] });
 
             if (authResult.error) {
@@ -82,6 +86,10 @@ export const UserResolver = {
         },
         changeUsername: async (_, { newUsername, confirmPassword }, context) => {
             const token = context.req.headers.authorization;
+
+            if (!token) {
+                throw new AuthenticationError('Invalid Token');
+            }
 
             const authResult = verifyToken({ token: token.split(' ')[1] });
 
@@ -109,6 +117,10 @@ export const UserResolver = {
         },
         addContact: async (_, { contact }, context) => {
             const token = context.req.headers.authorization;
+
+            if (!token) {
+                throw new AuthenticationError('Invalid Token');
+            }
 
             const authResult = verifyToken({ token: token.split(' ')[1] });
 
@@ -138,6 +150,10 @@ export const UserResolver = {
         },
         deleteContact: async (_, { contact }, context) => {
             const token = context.req.headers.authorization;
+
+            if (!token) {
+                throw new AuthenticationError('Invalid Token');
+            }
 
             const authResult = verifyToken({ token: token.split(' ')[1] });
 
@@ -170,6 +186,10 @@ export const UserResolver = {
     Query: {
         getUser: async (_, args, context) => {
             const token = context.req.headers.authorization;
+
+            if (!token) {
+                throw new AuthenticationError('Invalid Token');
+            }
 
             const result = verifyToken({ token: token.split(' ')[1] });
 

@@ -58,10 +58,13 @@ const allClients = [];
 
 io.on('connection', (socket) => {
     const id = socket.handshake.query.id;
+    const preferredStatus = socket.handshake.query.status;
     socket.join(id);
-    console.log(id);
 
-    allClients.push(id);
+    if (preferredStatus !== 'invisible') {
+        allClients.push({ id, status: preferredStatus });
+    }
+
     io.emit('online-users', allClients);
 
     socket.on('send-message', ({ recipient, message, date }) => {
@@ -73,9 +76,10 @@ io.on('connection', (socket) => {
     });
 
     socket.on('disconnect', () => {
-        const i = allClients.indexOf(socket.handshake.query.id);
-
-        allClients.splice(i, 1);
+        if (preferredStatus !== 'invisible') {
+            const i = allClients.findIndex((x) => x.id === id);
+            allClients.splice(i, 1);
+        }
         io.emit('online-users', allClients);
     });
 });

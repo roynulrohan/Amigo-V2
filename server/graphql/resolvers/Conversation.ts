@@ -9,6 +9,10 @@ export const ConversationResolver = {
         getAllConversations: async (_, args, context) => {
             const token = context.req.headers.authorization;
 
+            if (!token) {
+                throw new AuthenticationError('Invalid Token');
+            }
+
             const result = verifyToken({ token: token.split(' ')[1] });
 
             if (result.error) {
@@ -28,6 +32,10 @@ export const ConversationResolver = {
         },
         getConversation: async (_, { receiver }, context) => {
             const token = context.req.headers.authorization;
+
+            if (!token) {
+                throw new AuthenticationError('Invalid Token');
+            }
 
             const result = verifyToken({ token: token.split(' ')[1] });
 
@@ -67,6 +75,10 @@ export const ConversationResolver = {
     Mutation: {
         sendMessage: async (_, { receiver, message }, context) => {
             const token = context.req.headers.authorization;
+
+            if (!token) {
+                throw new AuthenticationError('Invalid Token');
+            }
 
             const result = verifyToken({ token: token.split(' ')[1] });
 

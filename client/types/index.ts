@@ -2,7 +2,8 @@ export interface UserData {
     _id: string;
     username?: string;
     photoURL?: string;
-    dateJoined: any;
+    contacts?: string[];
+    dateJoined: Date;
 }
 
 export interface AuthData {
@@ -12,10 +13,24 @@ export interface AuthData {
 
 export interface AuthState {
     authData: AuthData;
+    preferredStatus: string;
 }
 
 export interface AuthReducer {
     auth: AuthState;
+}
+
+export interface EmittedUserStatus {
+    id: string;
+    status: string;
+}
+
+export interface GeneralState {
+    onlineUsers: EmittedUserStatus[];
+}
+
+export interface GeneralReducer {
+    general: GeneralState;
 }
 
 export interface Conversation {

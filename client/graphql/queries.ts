@@ -8,6 +8,7 @@ export const VERIFY_USER = gql`
                 username
                 photoURL
                 dateJoined
+                contacts
             }
             token
         }

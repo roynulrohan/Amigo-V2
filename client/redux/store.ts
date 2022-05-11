@@ -3,9 +3,11 @@ import thunk from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { createWrapper } from 'next-redux-wrapper';
 import authReducer from './auth/authReducer';
+import generalReducer from './general/generalReducer';
 
 const rootReducer = combineReducers({
     auth: authReducer,
+    general: generalReducer,
 });
 
 const middleware = [thunk];

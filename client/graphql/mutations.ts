@@ -7,6 +7,7 @@ export const LOGIN_USER = gql`
                 _id
                 username
                 photoURL
+                contacts
                 dateJoined
             }
             token
@@ -21,9 +22,17 @@ export const REGISTER_USER = gql`
                 _id
                 username
                 photoURL
+                contacts
                 dateJoined
             }
             token
+        }
+    }
+`;
+export const ADD_CONTACT = gql`
+    mutation AddContact($contact: String!) {
+        addContact(contact: $contact) {
+            updatedContacts
         }
     }
 `;

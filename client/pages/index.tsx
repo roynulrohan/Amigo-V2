@@ -7,9 +7,10 @@ import { AuthReducer } from '../types';
 
 const Home: NextPage = () => {
     const auth = useSelector((state: AuthReducer) => state.auth.authData);
+    const preferredStatus = useSelector((state: AuthReducer) => state.auth.preferredStatus);
 
-    return auth?.user ? (
-        <SocketProvider id={auth.user._id}>
+    return auth?.user && auth.user.username && preferredStatus ? (
+        <SocketProvider id={auth.user.username} status={preferredStatus}>
             <MainApp />
         </SocketProvider>
     ) : (

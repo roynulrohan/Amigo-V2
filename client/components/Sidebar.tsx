@@ -1,18 +1,43 @@
 import { Tab } from '@headlessui/react';
-import React, { Fragment } from 'react';
-import { useSelector } from 'react-redux';
+import React, { Fragment, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { UPDATE_PREFERREDSTATUS } from '../redux/constants';
 import { AuthReducer } from '../types';
+import { ContactsPanel } from './ContactsPanel';
 import { ConversationsPanel } from './ConversationsPanel';
+import { OnlineStatus } from './OnlineStatus';
 
 export const Sidebar = () => {
+    const dispatch = useDispatch();
     const auth = useSelector((state: AuthReducer) => state.auth.authData);
+    const preferredStatus = useSelector((state: AuthReducer) => state.auth.preferredStatus);
+    const [tabIndex, setTabIndex] = useState<number>();
+    const [statusDropdownHidden, setStatusDropdownHidden] = useState(true);
+
+    useEffect(() => {
+        const currentTab = JSON.parse(sessionStorage.getItem('currentSidebarTab') || '{}');
+
+        setTabIndex(currentTab);
+
+        console.log(currentTab);
+    }, []);
+
+    useEffect(() => {
+        if (tabIndex !== undefined) {
+            sessionStorage.setItem('currentSidebarTab', tabIndex.toString());
+        }
+    }, [tabIndex]);
 
     return (
         <div className='bg-dark-accent text-white min-w-[400px] max-w-[400px] h-screen flex flex-col'>
             <div className='h-[75px] flex justify-center items-center p-3 select-none'>
                 <h1 className='text-pink-600 app-title text-3xl'>Amigo V2</h1>
             </div>
-            <Tab.Group>
+            <Tab.Group
+                selectedIndex={tabIndex}
+                onChange={(index: number) => {
+                    setTabIndex(index);
+                }}>
                 <Tab.List className='w-full flex justify-evenly'>
                     <Tab as={Fragment}>
                         {({ selected }) => (
@@ -84,16 +109,73 @@ export const Sidebar = () => {
                     <Tab.Panel>
                         <ConversationsPanel />
                     </Tab.Panel>
-                    <Tab.Panel>Contacts</Tab.Panel>
+                    <Tab.Panel>
+                        <ContactsPanel contacts={auth.user.contacts || []} />
+                    </Tab.Panel>
                     <Tab.Panel>Profile</Tab.Panel>
                 </Tab.Panels>
             </Tab.Group>
-            <div className='min-h-[60px] target:h-[60px] w-[400px] bg-darkest flex items-center px-10'>
+            <div className='relative min-h-[65px] target:h-[65px] w-[400px] bg-darkest flex items-center px-10'>
                 <div className='relative w-[45px] h-[45px]'>
                     <img src={auth.user.photoURL ? auth.user.photoURL : '/images/cat.png'} alt='' className='w-full h-full object-cover rounded-full' />
                 </div>
+                <div className='ml-3 flex flex-col space-y-1 rlea'>
+                    <p className='text-lg font-bold app-font'>{auth.user.username}</p>
 
-                <p className='ml-3 text-xl font-bold app-font'>{auth.user.username}</p>
+                    <div className='relative flex flex-col items-center'>
+                        <div hidden={statusDropdownHidden} className='z-10 absolute bottom-6 divide-y text-sm rounded-lg shadow w-44 bg-dark divide-gray-600'>
+                            <div className='py-1'>
+                                <button
+                                    onClick={() => {
+                                        dispatch({ type: UPDATE_PREFERREDSTATUS, payload: 'online' });
+                                        setStatusDropdownHidden(true);
+                                    }}
+                                    className='px-4 py-2 w-full hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white flex items-center space-x-2'>
+                                    <span className='text-2xl text-green-400'>•</span> <span>Online</span>
+                                </button>
+                            </div>
+                            <ul className='py-1 text-gray-700 dark:text-gray-200' aria-labelledby='dropdownDividerButton'>
+                                <li>
+                                    <button
+                                        onClick={() => {
+                                            dispatch({ type: UPDATE_PREFERREDSTATUS, payload: 'away' });
+                                            setStatusDropdownHidden(true);
+                                        }}
+                                        className='px-4 py-2 w-full hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white flex items-center space-x-2'>
+                                        <span className='text-2xl text-amber-500'>•</span> <span>Away</span>
+                                    </button>
+                                </li>
+                                <li>
+                                    <button
+                                        onClick={() => {
+                                            dispatch({ type: UPDATE_PREFERREDSTATUS, payload: 'dnd' });
+                                            setStatusDropdownHidden(true);
+                                        }}
+                                        className='px-4 py-2 w-full hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white flex items-center space-x-2'>
+                                        <span className='text-2xl text-red-500'>•</span> <span>Do not Disturb</span>
+                                    </button>
+                                </li>
+                                <li>
+                                    <button
+                                        onClick={() => {
+                                            dispatch({ type: UPDATE_PREFERREDSTATUS, payload: 'invisible' });
+                                            setStatusDropdownHidden(true);
+                                        }}
+                                        className='px-4 py-2 w-full hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white flex items-center space-x-2'>
+                                        <span className='text-2xl text-gray-300'>•</span> <span>Invisible</span>
+                                    </button>
+                                </li>
+                            </ul>
+                        </div>
+                        <div
+                            className='cursor-pointer'
+                            onClick={() => {
+                                setStatusDropdownHidden((prevState) => !prevState);
+                            }}>
+                            <OnlineStatus status={preferredStatus} />
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     );
