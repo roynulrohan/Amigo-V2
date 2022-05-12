@@ -1,19 +1,23 @@
 import { Tab } from '@headlessui/react';
 import React, { Fragment, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { CURRENT_CONVERSATION, UPDATE_PREFERREDSTATUS } from '../redux/constants';
+import { CURRENT_CONVERSATION, LOGOUT, UPDATE_PREFERREDSTATUS } from '../redux/constants';
 import { AuthReducer } from '../types';
 import { ContactsPanel } from './ContactsPanel';
 import { ConversationsPanel } from './ConversationsPanel';
 import { OnlineStatus } from './OnlineStatus';
 import { ProfilePanel } from './ProfilePanel';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useRouter } from 'next/router';
 
 export const Sidebar = () => {
     const dispatch = useDispatch();
+    const router = useRouter();
     const auth = useSelector((state: AuthReducer) => state.auth.authData);
     const preferredStatus = useSelector((state: AuthReducer) => state.auth.preferredStatus);
     const [tabIndex, setTabIndex] = useState<number>();
     const [statusDropdownHidden, setStatusDropdownHidden] = useState(true);
+    const [settingsDropdownHidden, setSettingsDropdownHidden] = useState(true);
 
     useEffect(() => {
         const currentTab = JSON.parse(sessionStorage.getItem('currentSidebarTab') || '0') || 0;
@@ -124,7 +128,17 @@ export const Sidebar = () => {
             </Tab.Group>
             <div className='relative min-h-[65px] target:h-[65px] w-[400px] bg-darkest flex items-center px-10'>
                 <div className='relative w-[45px] h-[45px]'>
-                    <img src={auth.user.photoURL ? auth.user.photoURL : '/images/cat.png'} alt='' className='w-full h-full object-cover rounded-full' />
+                    {
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img
+                            onClick={() => {
+                                setTabIndex(2);
+                            }}
+                            src={auth.user.photoURL ? auth.user.photoURL : '/images/cat.png'}
+                            alt=''
+                            className='w-full h-full object-cover rounded-full cursor-pointer'
+                        />
+                    }
                 </div>
                 <div className='ml-3 flex flex-col space-y-1 rlea'>
                     <p className='text-lg font-bold app-font'>{auth.user.username}</p>
@@ -182,6 +196,51 @@ export const Sidebar = () => {
                             <OnlineStatus status={preferredStatus} />
                         </div>
                     </div>
+                </div>
+                <div className='relative flex justify-center ml-auto'>
+                    <div
+                        hidden={settingsDropdownHidden}
+                        onClick={() => {
+                            setSettingsDropdownHidden(true);
+                        }}
+                        className='fixed h-screen w-screen top-0 left-0 bg-transparent z-40'></div>{' '}
+                    <AnimatePresence>
+                        {!settingsDropdownHidden && (
+                            <motion.div
+                                key={'settingsDropdown'}
+                                exit={{ scaleY: 0 }}
+                                initial={{ scaleY: 0 }}
+                                animate={{ scaleY: 1, transition: { duration: 0.3 }, transformOrigin: 'bottom' }}
+                                className='bottom-14 fixed divide-y divide-gray-100 rounded-lg w-44 bg-zinc-700 z-50'>
+                                <ul className='py-1 text-sm text-gray-700 dark:text-gray-200'>
+                                    <li>
+                                        <button disabled className='block text-center w-full px-4 py-2'>
+                                            Amigo V2
+                                        </button>
+                                    </li>
+                                    <li>
+                                        <button
+                                            onClick={() => {
+                                                dispatch({ type: LOGOUT });
+                                                router.push('/auth');
+                                            }}
+                                            className='block text-center w-full px-4 py-2 hover:bg-zinc-600 text-red-500'>
+                                            Logout
+                                        </button>
+                                    </li>
+                                </ul>
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
+                    <button
+                        onClick={() => {
+                            setSettingsDropdownHidden(false);
+                        }}
+                        className='text-gray-400 cursor-pointer focus:rotate-90 transition-all duration-500 z-20'>
+                        <svg xmlns='http://www.w3.org/2000/svg' width='20' height='20' fill='currentColor' className='bi bi-gear-fill' viewBox='0 0 16 16'>
+                            <path d='M9.405 1.05c-.413-1.4-2.397-1.4-2.81 0l-.1.34a1.464 1.464 0 0 1-2.105.872l-.31-.17c-1.283-.698-2.686.705-1.987 1.987l.169.311c.446.82.023 1.841-.872 2.105l-.34.1c-1.4.413-1.4 2.397 0 2.81l.34.1a1.464 1.464 0 0 1 .872 2.105l-.17.31c-.698 1.283.705 2.686 1.987 1.987l.311-.169a1.464 1.464 0 0 1 2.105.872l.1.34c.413 1.4 2.397 1.4 2.81 0l.1-.34a1.464 1.464 0 0 1 2.105-.872l.31.17c1.283.698 2.686-.705 1.987-1.987l-.169-.311a1.464 1.464 0 0 1 .872-2.105l.34-.1c1.4-.413 1.4-2.397 0-2.81l-.34-.1a1.464 1.464 0 0 1-.872-2.105l.17-.31c.698-1.283-.705-2.686-1.987-1.987l-.311.169a1.464 1.464 0 0 1-2.105-.872l-.1-.34zM8 10.93a2.929 2.929 0 1 1 0-5.86 2.929 2.929 0 0 1 0 5.858z' />
+                        </svg>
+                    </button>
                 </div>
             </div>
         </div>

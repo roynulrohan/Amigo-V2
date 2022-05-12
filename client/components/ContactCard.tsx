@@ -5,6 +5,7 @@ import { DELETE_CONTACT } from '../graphql/mutations';
 import { GET_CONVERSATION, GET_PHOTO } from '../graphql/queries';
 import { CURRENT_CONVERSATION, UPDATE_CONTACTS } from '../redux/constants';
 import { OnlineStatus } from './OnlineStatus';
+import { motion } from 'framer-motion';
 
 interface Props {
     contact: string;
@@ -43,7 +44,10 @@ export const ContactCard = ({ contact, status, dispatch }: Props) => {
     };
 
     return (
-        <div className='bg-darkest relative flex items-center rounded-xl shadow-lg max-h-[80px] overflow-hidden mb-3'>
+        <motion.div
+            initial={{ opacity: 0, translateY: 50 }}
+            animate={{ opacity: 1, translateY: 0, transition: { duration: 0.3 } }}
+            className='bg-darkest relative flex items-center rounded-xl shadow-lg max-h-[80px] overflow-hidden mb-3'>
             <div className='relative w-[80px] h-[80px]'>
                 {!photoLoading && photoData && (
                     <img src={photoData.getPhoto ? photoData.getPhoto : '/images/cat.png'} alt='' className='w-full h-full object-cover rounded-l-xl' />
@@ -106,6 +110,6 @@ export const ContactCard = ({ contact, status, dispatch }: Props) => {
                     <div className='w-1 h-1 rounded-full bg-gray-500'></div>
                 </div>
             </div>
-        </div>
+        </motion.div>
     );
 };

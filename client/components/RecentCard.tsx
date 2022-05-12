@@ -6,6 +6,7 @@ import { GET_PHOTO } from '../graphql/queries';
 import { CURRENT_CONVERSATION } from '../redux/constants';
 import { Conversation } from '../types';
 import { OnlineStatus } from './OnlineStatus';
+import { motion } from 'framer-motion';
 
 interface Props {
     conversation: Conversation;
@@ -21,7 +22,9 @@ export const RecentCard = ({ conversation, status, dispatch }: Props) => {
     }, [getPhoto]);
 
     return (
-        <div
+        <motion.div
+            initial={{ opacity: 0, translateY: -20 }}
+            animate={{ opacity: 1, translateY: 0, transition: { duration: 0.3 } }}
             onClick={() => {
                 dispatch({ type: CURRENT_CONVERSATION, payload: conversation });
             }}
@@ -59,6 +62,6 @@ export const RecentCard = ({ conversation, status, dispatch }: Props) => {
                     </p>
                 </div>
             </div>
-        </div>
+        </motion.div>
     );
 };

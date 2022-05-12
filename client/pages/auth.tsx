@@ -1,16 +1,18 @@
 import { useMutation } from '@apollo/client';
 import type { NextPage } from 'next';
-import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { LOGIN_USER, REGISTER_USER } from '../graphql/mutations';
 import { AUTH, LOGOUT } from '../redux/constants';
 import { AuthReducer } from '../types';
+import { motion } from 'framer-motion';
 
 const initialState = { username: '', password: '', confirmPassword: '' };
 
 const Home: NextPage = () => {
     const auth = useSelector((state: AuthReducer) => state.auth.authData);
+    const router = useRouter();
     const dispatch = useDispatch();
     const [loginMutation] = useMutation(LOGIN_USER);
     const [registerMutation] = useMutation(REGISTER_USER);
@@ -19,14 +21,16 @@ const Home: NextPage = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [isSignup, setIsSignup] = useState(false);
 
+    useEffect(() => {
+        if (auth?.user) {
+            router.push('/');
+        }
+    }, [auth, router]);
+
     const switchMode = (e: any) => {
         setIsLoading(false);
         setIsSignup((prevIsSignup) => !prevIsSignup);
     };
-
-    useEffect(() => {
-        console.log(auth);
-    }, [auth]);
 
     const handleSubmit = (e: any) => {
         e.preventDefault();
@@ -62,7 +66,7 @@ const Home: NextPage = () => {
     };
 
     return (
-        <div className='bg-zinc-900 h-screen w-full flex flex-auto items-center text-center'>
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1, transition: { duration: 0.5, delay: 0.2 } }} className='bg-zinc-900 h-screen w-full flex flex-auto items-center text-center'>
             <div className='w-full max-w-sm mx-auto overflow-hidden bg-zinc-800 text-gray-200 rounded-2xl shadow-xl'>
                 {!auth?.user ? (
                     <>
@@ -178,7 +182,7 @@ const Home: NextPage = () => {
                     </div>
                 )}
             </div>
-        </div>
+        </motion.div>
     );
 };
 

@@ -1,10 +1,12 @@
 import { Conversation } from '../../types';
-import { CONVERSATIONS, CONVERSATION_COUNT, CURRENT_CONVERSATION, ONLINE_USERS, SEND_MESSAGE } from '../constants';
+import { CONVERSATIONS, CONVERSATION_COUNT, CURRENT_CONVERSATION, LOGOUT, ONLINE_USERS, SEND_MESSAGE } from '../constants';
 
 const initialState: any = { onlineUsers: [], conversations: [], currentConversation: null, conversationCount: 0 };
 
 const generalReducer = (state = initialState, action: any) => {
     switch (action.type) {
+        case LOGOUT:
+            return initialState;
         case CONVERSATIONS:
             return {
                 ...state,
