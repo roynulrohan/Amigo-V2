@@ -67,11 +67,10 @@ io.on('connection', (socket) => {
 
     io.emit('online-users', allClients);
 
-    socket.on('send-message', ({ recipient, message, date }) => {
-        socket.broadcast.to(recipient).emit('recieve-message', {
+    socket.on('send-message', ({ recipient, conversation }) => {
+        socket.broadcast.to(recipient).emit('receive-message', {
             sender: id,
-            content: message,
-            date,
+            conversation,
         });
     });
 

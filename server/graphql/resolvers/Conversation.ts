@@ -22,11 +22,11 @@ export const ConversationResolver = {
 
             const conversations: any = await Conversation.find(
                 {
-                    participants: { $regex: senderUser.username, $options: 'i' },
+                    participants: senderUser.username,
                     messages: { $exists: true, $ne: [] },
-                },
+                }
                 // { _id: true, participants: true, messages: { $slice: -1 }, createdAt: true, updatedAt: true }
-            );
+            ).sort({ updatedAt: -1 });
 
             return conversations;
         },
@@ -55,7 +55,7 @@ export const ConversationResolver = {
             }
 
             const conversation: any = await Conversation.findOne({
-                $and: [{ participants: { $regex: senderUser.username, $options: 'i' } }, { participants: { $regex: receiver, $options: 'i' } }],
+                $and: [{ participants: senderUser.username }, { participants: receiver }],
             });
 
             if (conversation) {
@@ -105,7 +105,7 @@ export const ConversationResolver = {
 
             const updatedConversation: any = await Conversation.findOneAndUpdate(
                 {
-                    $and: [{ participants: { $regex: senderUser.username, $options: 'i' } }, { participants: { $regex: receiver, $options: 'i' } }],
+                    $and: [{ participants: senderUser.username }, { participants: receiver }],
                 },
                 { $push: { messages: newMessage } },
                 { new: true, upsert: true }

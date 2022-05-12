@@ -27,6 +27,7 @@ export interface EmittedUserStatus {
 
 export interface GeneralState {
     onlineUsers: EmittedUserStatus[];
+    conversations: Conversation[];
     currentConversation: Conversation;
     conversationCount: number;
 }
@@ -38,9 +39,9 @@ export interface GeneralReducer {
 export interface Conversation {
     _id: string;
     participants: string[];
-    messages: [Message];
-    createdAt: Date;
-    updatedAt: Date;
+    messages: Message[];
+    createdAt: number;
+    updatedAt: number;
 }
 
 export interface Message {

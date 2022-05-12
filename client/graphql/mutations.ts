@@ -52,3 +52,20 @@ export const UPDATE_PHOTO = gql`
         }
     }
 `;
+
+export const SEND_MESSAGE = gql`
+    mutation SendMessage($receiver: String!, $message: String!) {
+        sendMessage(receiver: $receiver, message: $message) {
+            _id
+            participants
+            messages {
+                _id
+                sender
+                content
+                dateCreated
+            }
+            createdAt
+            updatedAt
+        }
+    }
+`;

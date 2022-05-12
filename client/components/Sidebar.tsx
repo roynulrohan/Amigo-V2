@@ -16,11 +16,9 @@ export const Sidebar = () => {
     const [statusDropdownHidden, setStatusDropdownHidden] = useState(true);
 
     useEffect(() => {
-        const currentTab = JSON.parse(sessionStorage.getItem('currentSidebarTab') || '{}') || 0;
+        const currentTab = JSON.parse(sessionStorage.getItem('currentSidebarTab') || '0') || 0;
 
         setTabIndex(currentTab);
-
-        console.log(currentTab);
     }, []);
 
     useEffect(() => {
