@@ -1,4 +1,5 @@
 import { useLazyQuery, useMutation } from '@apollo/client';
+import Head from 'next/head';
 import React, { FormEventHandler, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Socket } from 'socket.io-client';
@@ -88,6 +89,7 @@ export const Chat = () => {
         <div className='flex-grow'>
             {currentConversation ? (
                 <div className='bg-dark text-white h-screen flex flex-col'>
+                    <Head>{recipient && <title>{recipient} | Amigo v2</title>}</Head>
                     <div className='h-[75px] flex justify-center items-center shadow-lg'>
                         <div className='flex items-center space-x-5 select-none bg-darkest p-3 px-10 rounded-full'>
                             <h5 className='font-bold text-2xl'>{recipient}</h5>
@@ -208,6 +210,8 @@ export const Chat = () => {
                 auth.user &&
                 auth.user.contacts && (
                     <div className={'flex flex-col justify-center items-center h-screen '}>
+                        <Head>{recipient && <title>Amigo v2</title>}</Head>
+                        
                         <div className='text-center app-font'>
                             <h2 className='text-white text-3xl '>
                                 Hello,

@@ -1,5 +1,6 @@
 import { useLazyQuery } from '@apollo/client';
 import type { NextPage } from 'next';
+import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -36,12 +37,19 @@ const Home: NextPage = () => {
         }
     }, [auth?.user?.username]);
 
-    return auth?.user && auth.user.username && general.onlineUsers && general.conversations && preferredStatus ? (
-        <SocketProvider id={auth.user.username} status={preferredStatus}>
-            <MainApp />
-        </SocketProvider>
-    ) : (
-        <div className='h-screen bg-dark'></div>
+    return (
+        <>
+            <Head>
+                <title>Amigo v2</title>
+            </Head>
+            {auth?.user && auth.user.username && general.onlineUsers && general.conversations && preferredStatus ? (
+                <SocketProvider id={auth.user.username} status={preferredStatus}>
+                    <MainApp />
+                </SocketProvider>
+            ) : (
+                <div className='h-screen bg-dark'></div>
+            )}
+        </>
     );
 };
 

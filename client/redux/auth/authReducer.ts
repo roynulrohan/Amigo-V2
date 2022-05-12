@@ -1,10 +1,10 @@
 import { AUTH, LOGOUT, UPDATE_USERNAME, UPDATE_PHOTOURL, UPDATE_CONTACTS, UPDATE_PREFERREDSTATUS } from '../constants';
 
-const authReducer = (state = { authData: null }, action: any) => {
+const authReducer = (state = { authData: null, preferredStatus: 'online' }, action: any) => {
     switch (action.type) {
         case AUTH:
             localStorage.setItem('profile', JSON.stringify({ ...action?.payload }));
-            const preferredStatus = JSON.parse(localStorage.getItem('preferredStatus') || '{}') || 'online';
+            const preferredStatus = JSON.parse(localStorage.getItem('preferredStatus') || '0') || 'online';
 
             return { ...state, authData: action?.payload, preferredStatus };
         case LOGOUT:
