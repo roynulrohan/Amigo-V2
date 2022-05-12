@@ -39,7 +39,7 @@ export const Sidebar = () => {
                         dispatch({ type: CURRENT_CONVERSATION, payload: null });
                     }}
                     className='text-pink-600 app-title text-3xl cursor-pointer'>
-                    Amigo V2
+                    Amigo v2
                 </h1>
             </div>
             <Tab.Group
@@ -141,59 +141,75 @@ export const Sidebar = () => {
                     }
                 </div>
                 <div className='ml-3 flex flex-col space-y-1 rlea'>
-                    <p className='text-lg font-bold app-font'>{auth.user.username}</p>
-
                     <div className='relative flex flex-col items-center'>
-                        <div hidden={statusDropdownHidden} className='z-10 absolute bottom-6 divide-y text-sm rounded-lg shadow w-44 bg-dark divide-gray-600'>
-                            <div className='py-1'>
-                                <button
-                                    onClick={() => {
-                                        dispatch({ type: UPDATE_PREFERREDSTATUS, payload: 'online' });
-                                        setStatusDropdownHidden(true);
-                                    }}
-                                    className='px-4 py-2 w-full hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white flex items-center space-x-2'>
-                                    <span className='text-2xl text-green-400'>•</span> <span>Online</span>
-                                </button>
-                            </div>
-                            <ul className='py-1 text-gray-700 dark:text-gray-200' aria-labelledby='dropdownDividerButton'>
-                                <li>
-                                    <button
-                                        onClick={() => {
-                                            dispatch({ type: UPDATE_PREFERREDSTATUS, payload: 'away' });
-                                            setStatusDropdownHidden(true);
-                                        }}
-                                        className='px-4 py-2 w-full hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white flex items-center space-x-2'>
-                                        <span className='text-2xl text-amber-500'>•</span> <span>Away</span>
-                                    </button>
-                                </li>
-                                <li>
-                                    <button
-                                        onClick={() => {
-                                            dispatch({ type: UPDATE_PREFERREDSTATUS, payload: 'dnd' });
-                                            setStatusDropdownHidden(true);
-                                        }}
-                                        className='px-4 py-2 w-full hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white flex items-center space-x-2'>
-                                        <span className='text-2xl text-red-500'>•</span> <span>Do not Disturb</span>
-                                    </button>
-                                </li>
-                                <li>
-                                    <button
-                                        onClick={() => {
-                                            dispatch({ type: UPDATE_PREFERREDSTATUS, payload: 'invisible' });
-                                            setStatusDropdownHidden(true);
-                                        }}
-                                        className='px-4 py-2 w-full hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white flex items-center space-x-2'>
-                                        <span className='text-2xl text-gray-300'>•</span> <span>Invisible</span>
-                                    </button>
-                                </li>
-                            </ul>
-                        </div>
+                        <div
+                            hidden={statusDropdownHidden}
+                            onClick={() => {
+                                setStatusDropdownHidden(true);
+                            }}
+                            className='fixed h-screen w-screen top-0 left-0 bg-transparent z-40'></div>
+                        <AnimatePresence>
+                            {!statusDropdownHidden && (
+                                <motion.div
+                                    key={'statusDropdown'}
+                                    exit={{ scaleY: 0 }}
+                                    initial={{ scaleY: 0 }}
+                                    animate={{ scaleY: 1, transition: { duration: 0.2 }, transformOrigin: 'bottom' }}
+                                    className='z-50 absolute bottom-12 divide-y text-sm rounded-lg shadow w-44 bg-dark divide-gray-600'>
+                                    <div className='py-1'>
+                                        <button
+                                            onClick={() => {
+                                                dispatch({ type: UPDATE_PREFERREDSTATUS, payload: 'online' });
+                                                setStatusDropdownHidden(true);
+                                            }}
+                                            className='px-4 py-2 w-full hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white flex items-center space-x-2'>
+                                            <span className='text-2xl text-green-400'>•</span> <span>Online</span>
+                                        </button>
+                                    </div>
+                                    <ul className='py-1 text-gray-700 dark:text-gray-200' aria-labelledby='dropdownDividerButton'>
+                                        <li>
+                                            <button
+                                                onClick={() => {
+                                                    dispatch({ type: UPDATE_PREFERREDSTATUS, payload: 'away' });
+                                                    setStatusDropdownHidden(true);
+                                                }}
+                                                className='px-4 py-2 w-full hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white flex items-center space-x-2'>
+                                                <span className='text-2xl text-amber-500'>•</span> <span>Away</span>
+                                            </button>
+                                        </li>
+                                        <li>
+                                            <button
+                                                onClick={() => {
+                                                    dispatch({ type: UPDATE_PREFERREDSTATUS, payload: 'dnd' });
+                                                    setStatusDropdownHidden(true);
+                                                }}
+                                                className='px-4 py-2 w-full hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white flex items-center space-x-2'>
+                                                <span className='text-2xl text-red-500'>•</span> <span>Do not Disturb</span>
+                                            </button>
+                                        </li>
+                                        <li>
+                                            <button
+                                                onClick={() => {
+                                                    dispatch({ type: UPDATE_PREFERREDSTATUS, payload: 'invisible' });
+                                                    setStatusDropdownHidden(true);
+                                                }}
+                                                className='px-4 py-2 w-full hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white flex items-center space-x-2'>
+                                                <span className='text-2xl text-gray-300'>•</span> <span>Invisible</span>
+                                            </button>
+                                        </li>
+                                    </ul>
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
                         <div
                             className='cursor-pointer'
                             onClick={() => {
                                 setStatusDropdownHidden((prevState) => !prevState);
                             }}>
-                            <OnlineStatus status={preferredStatus} />
+                            <p className='text-lg font-bold app-font mb-1'>{auth.user.username}</p>
+                            <div>
+                                <OnlineStatus status={preferredStatus} />
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -203,7 +219,7 @@ export const Sidebar = () => {
                         onClick={() => {
                             setSettingsDropdownHidden(true);
                         }}
-                        className='fixed h-screen w-screen top-0 left-0 bg-transparent z-40'></div>{' '}
+                        className='fixed h-screen w-screen top-0 left-0 bg-transparent z-40'></div>
                     <AnimatePresence>
                         {!settingsDropdownHidden && (
                             <motion.div
@@ -215,7 +231,7 @@ export const Sidebar = () => {
                                 <ul className='py-1 text-sm text-gray-700 dark:text-gray-200'>
                                     <li>
                                         <button disabled className='block text-center w-full px-4 py-2'>
-                                            Amigo V2
+                                            Amigo v2
                                         </button>
                                     </li>
                                     <li>
