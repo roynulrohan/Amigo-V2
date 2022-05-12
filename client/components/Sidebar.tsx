@@ -1,11 +1,12 @@
 import { Tab } from '@headlessui/react';
 import React, { Fragment, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { UPDATE_PREFERREDSTATUS } from '../redux/constants';
+import { CURRENT_CONVERSATION, UPDATE_PREFERREDSTATUS } from '../redux/constants';
 import { AuthReducer } from '../types';
 import { ContactsPanel } from './ContactsPanel';
 import { ConversationsPanel } from './ConversationsPanel';
 import { OnlineStatus } from './OnlineStatus';
+import { ProfilePanel } from './ProfilePanel';
 
 export const Sidebar = () => {
     const dispatch = useDispatch();
@@ -15,7 +16,7 @@ export const Sidebar = () => {
     const [statusDropdownHidden, setStatusDropdownHidden] = useState(true);
 
     useEffect(() => {
-        const currentTab = JSON.parse(sessionStorage.getItem('currentSidebarTab') || '{}');
+        const currentTab = JSON.parse(sessionStorage.getItem('currentSidebarTab') || '{}') || 0;
 
         setTabIndex(currentTab);
 
@@ -30,8 +31,14 @@ export const Sidebar = () => {
 
     return (
         <div className='bg-dark-accent text-white min-w-[400px] max-w-[400px] h-screen flex flex-col'>
-            <div className='h-[75px] flex justify-center items-center p-3 select-none'>
-                <h1 className='text-pink-600 app-title text-3xl'>Amigo V2</h1>
+            <div className='h-[75px] flex justify-center items-center p-3 select-none '>
+                <h1
+                    onClick={() => {
+                        dispatch({ type: CURRENT_CONVERSATION, payload: null });
+                    }}
+                    className='text-pink-600 app-title text-3xl cursor-pointer'>
+                    Amigo V2
+                </h1>
             </div>
             <Tab.Group
                 selectedIndex={tabIndex}
@@ -107,12 +114,14 @@ export const Sidebar = () => {
                 </Tab.List>
                 <Tab.Panels className='flex-grow overflow-auto max-h-screen custom-scroll'>
                     <Tab.Panel>
-                        <ConversationsPanel />
+                        <ConversationsPanel dispatch={dispatch} />
                     </Tab.Panel>
                     <Tab.Panel>
                         <ContactsPanel contacts={auth.user.contacts || []} />
                     </Tab.Panel>
-                    <Tab.Panel>Profile</Tab.Panel>
+                    <Tab.Panel>
+                        <ProfilePanel user={auth.user} dispatch={dispatch} />
+                    </Tab.Panel>
                 </Tab.Panels>
             </Tab.Group>
             <div className='relative min-h-[65px] target:h-[65px] w-[400px] bg-darkest flex items-center px-10'>

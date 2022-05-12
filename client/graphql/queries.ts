@@ -14,12 +14,31 @@ export const VERIFY_USER = gql`
         }
     }
 `;
+
 export const GET_ALL_CONVERSATIONS = gql`
     query GetAllConversations {
         getAllConversations {
             _id
             participants
             messages {
+                _id
+                sender
+                content
+                dateCreated
+            }
+            createdAt
+            updatedAt
+        }
+    }
+`;
+
+export const GET_CONVERSATION = gql`
+    query GetConversation($receiver: String!) {
+        getConversation(receiver: $receiver) {
+            _id
+            participants
+            messages {
+                _id
                 sender
                 content
                 dateCreated

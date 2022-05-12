@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { GeneralReducer } from '../types';
 import { ContactCard } from './ContactCard';
 import { ContactFormModal } from './ContactFormModal';
@@ -9,6 +9,7 @@ interface Props {
 }
 
 export const ContactsPanel = ({ contacts }: Props) => {
+    const dispatch = useDispatch();
     const onlineUsers = useSelector((state: GeneralReducer) => state.general.onlineUsers);
     const [contactModalHidden, setContactModalHidden] = useState(true);
     const [searchInput, setSearchInput] = useState('');
@@ -63,7 +64,7 @@ export const ContactsPanel = ({ contacts }: Props) => {
                         const isOnline = onlineUsers.find((o) => o.id === contact);
 
                         if (searchInput === '' || contact.toLowerCase().search(searchInput.toLowerCase()) >= 0) {
-                            return <ContactCard key={contact} contact={contact} status={isOnline ? isOnline.status : 'offline'} />;
+                            return <ContactCard key={contact} contact={contact} status={isOnline ? isOnline.status : 'offline'} dispatch={dispatch} />;
                         }
                     })
                 ) : (

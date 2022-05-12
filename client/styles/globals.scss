@@ -1,3 +1,5 @@
+@forward 'Chat.scss';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -47,4 +49,8 @@ a {
 * {
     scrollbar-color: #ff0080bd #1e2025;
     scrollbar-width: thin;
+}
+
+.dummy-profile-card {
+    filter: drop-shadow(0px 0px 1vh #ff0080bd);
 }

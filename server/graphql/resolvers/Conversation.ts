@@ -25,7 +25,7 @@ export const ConversationResolver = {
                     participants: { $regex: senderUser.username, $options: 'i' },
                     messages: { $exists: true, $ne: [] },
                 },
-                { _id: true, participants: true, messages: { $slice: -1 }, createdAt: true, updatedAt: true }
+                // { _id: true, participants: true, messages: { $slice: -1 }, createdAt: true, updatedAt: true }
             );
 
             return conversations;

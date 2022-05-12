@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux';
 import { Socket } from 'socket.io-client';
 import { useSocket } from '../contexts/SocketProvider';
 import { ONLINE_USERS } from '../redux/constants';
+import { Chat } from './Chat';
 import { Sidebar } from './Sidebar';
 
 export const MainApp = () => {
@@ -22,8 +23,9 @@ export const MainApp = () => {
     }, [socket, dispatch]);
 
     return (
-        <div className='h-screen bg-dark '>
+        <div className='h-screen bg-dark flex'>
             <Sidebar />
+            <Chat />
         </div>
     );
 };

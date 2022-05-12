@@ -1,0 +1,26 @@
+.separator {
+    color: rgb(150, 150, 150);
+    margin-left: 3rem;
+    margin-right: 3rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    font-size: 0.8rem;
+}
+
+.separator::before,
+.separator::after {
+    content: '';
+    flex: 1;
+    border-bottom: 3px solid #1E2025;
+}
+
+.separator::before {
+    margin-right: 1rem;
+}
+
+.separator::after {
+    margin-left: 1rem;
+}

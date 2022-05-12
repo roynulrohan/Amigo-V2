@@ -32,7 +32,7 @@ export const OnlineStatus = ({ status }: Props) => {
     };
 
     return (
-        <p className={'text-xs select-none font-bold px-2 flex items-center space-x-1 rounded-full outline outline-1 ' + getColor()}>
+        <p className={'text-xs select-none font-bold px-2 flex items-center justify-center  space-x-1 rounded-full outline outline-1 ' + getColor()}>
             <span>•</span> <span>{getStatus()}</span>
         </p>
     );

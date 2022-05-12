@@ -30,7 +30,6 @@ export const ContactFormModal = ({ hidden, close }: Props) => {
 
         addContactMutation({ variables: { contact: contactInput } })
             .then(({ data }) => {
-                console.log(data.addContact.updatedContacts);
                 dispatch({ type: UPDATE_CONTACTS, payload: { newContacts: data?.addContact?.updatedContacts } });
                 close();
             })

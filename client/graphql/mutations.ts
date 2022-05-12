@@ -36,3 +36,19 @@ export const ADD_CONTACT = gql`
         }
     }
 `;
+
+export const DELETE_CONTACT = gql`
+    mutation DeleteContact($contact: String!) {
+        deleteContact(contact: $contact) {
+            updatedContacts
+        }
+    }
+`;
+
+export const UPDATE_PHOTO = gql`
+    mutation UpdatePhoto($url: String!) {
+        updatePhoto(url: $url) {
+            newPhotoURL
+        }
+    }
+`;

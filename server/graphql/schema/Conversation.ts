@@ -4,6 +4,7 @@ export const ConversationTypeDef = gql`
     scalar Date
 
     type Message {
+        _id: String!
         sender: String!
         content: String!
         dateCreated: Date!
