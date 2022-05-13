@@ -23,6 +23,7 @@ const Home: NextPage = () => {
 
     useEffect(() => {
         if (auth?.user) {
+            window.location.reload();
             router.push('/');
         }
     }, [auth, router]);
@@ -66,7 +67,10 @@ const Home: NextPage = () => {
     };
 
     return (
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1, transition: { duration: 0.5, delay: 0.2 } }} className='bg-zinc-900 h-screen w-full flex flex-auto items-center text-center'>
+        <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1, transition: { duration: 0.5, delay: 0.2 } }}
+            className='bg-zinc-900 h-screen w-full flex flex-auto items-center text-center'>
             <div className='w-full max-w-sm mx-auto overflow-hidden bg-zinc-800 text-gray-200 rounded-2xl shadow-xl'>
                 {!auth?.user ? (
                     <>
