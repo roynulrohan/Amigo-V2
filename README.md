@@ -2,7 +2,7 @@
 
 ## Overview
 
-Amigo v2 is a real-time chat application developed with Next.js along with a GraphQL API. This project is a remake of [Amigo Chat](https://github.com/roynulrohan/amigo-chat), which I also developed. The "remake" is mostly a migration to a slightly different stack and with improved features. The motivation behind this came from the lack of scalability and good practices in the first version, which became a barrier in implementing new features. The idea of remaking the whole project seemed easier.
+Amigo v2 is a real-time chat application developed with Next.js along with a GraphQL API. This project is a remake of [Amigo](https://github.com/roynulrohan/amigo-chat). The "remake" is a migration to a slightly different stack and with improved features. The motivation behind this came from the lack of scalability and good practices in the first version.
 
 ## Table of Contents
 

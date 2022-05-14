@@ -12,7 +12,6 @@ import { useRouter } from 'next/router';
 
 export const Sidebar = () => {
     const dispatch = useDispatch();
-    const router = useRouter();
     const auth = useSelector((state: AuthReducer) => state.auth.authData);
     const preferredStatus = useSelector((state: AuthReducer) => state.auth.preferredStatus);
     const [tabIndex, setTabIndex] = useState<number>();
@@ -238,7 +237,7 @@ export const Sidebar = () => {
                                         <button
                                             onClick={() => {
                                                 dispatch({ type: LOGOUT });
-                                                router.push('/auth');
+                                                window.location.reload();
                                             }}
                                             className='block text-center w-full px-4 py-2 hover:bg-zinc-600 text-red-500'>
                                             Logout

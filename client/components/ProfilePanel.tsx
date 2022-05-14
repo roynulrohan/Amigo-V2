@@ -1,9 +1,11 @@
 import { useMutation } from '@apollo/client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { Dispatch } from 'redux';
 import { UPDATE_PHOTO } from '../graphql/mutations';
 import { UPDATE_PHOTOURL } from '../redux/constants';
-import { UserData } from '../types';
+import { AuthReducer, UserData } from '../types';
+import { doesImageExist } from '../utils';
 import { OnlineStatus } from './OnlineStatus';
 
 interface Props {
@@ -12,13 +14,25 @@ interface Props {
 }
 export const ProfilePanel = ({ user, dispatch }: Props) => {
     const [pictureURL, setPictureURL] = useState('');
+    const [pictureSubmitDisabled, setPictureSubmitDisabled] = useState(true);
     const [updatePhotoMutation] = useMutation(UPDATE_PHOTO);
+    const preferredStatus = useSelector((state: AuthReducer) => state.auth.preferredStatus);
+
+    useEffect(() => {
+        if (pictureURL === '') {
+            setPictureSubmitDisabled(true);
+        } else {
+            doesImageExist(pictureURL)
+                .then(() => {
+                    setPictureSubmitDisabled(false);
+                })
+                .catch(() => {
+                    setPictureSubmitDisabled(true);
+                });
+        }
+    }, [pictureURL]);
 
     const updatePhoto = () => {
-        if (pictureURL === '') {
-            return;
-        }
-
         updatePhotoMutation({ variables: { url: pictureURL } })
             .then(({ data }) => {
                 dispatch({ type: UPDATE_PHOTOURL, payload: { newPhotoURL: data?.updatePhoto?.newPhotoURL } });
@@ -33,22 +47,17 @@ export const ProfilePanel = ({ user, dispatch }: Props) => {
             <div className='relative'>
                 <div className='flex overflow-hidden mb-3'>
                     <div className='relative dummy-profile-card min-w-[200px] w-[200px] min-h-[200px] h-[200px] p-4'>
-                        <img
-                            src={user.photoURL ? user.photoURL : '/images/cat.png'}
-                            alt=''
-                            className='w-full h-full rounded-lg object-cover'
-                        />
+                        <img src={user.photoURL ? user.photoURL : '/images/cat.png'} alt='' className='w-full h-full rounded-lg object-cover' />
                     </div>
 
-                    <div className='p-4 flex justify-between h-[140px]'>
-                        <div className='flex flex-col space-y-3'>
+                    <div className='p-4 flex justify-between h-[140px] w-full'>
+                        <div className='flex flex-col items-start space-y-3 w-full'>
                             <p className='text-3xl text-cyan-400 font-bold'>{user.username}</p>
-                            <OnlineStatus status={'online'} />
+                            <OnlineStatus status={preferredStatus} />
 
-                            <p className='bg-gray-300 h-4 w-3/4 font-bold'></p>
-                            <p className='bg-gray-500 h-4 w-full font-bold'></p>
+                            <p className='bg-gray-300 h-[10px] w-full font-bold'></p>
+                            <p className='bg-gray-500 h-[10px] w-3/4 font-bold'></p>
                         </div>
-                        <div className='flex flex-col items-end justify-center'></div>
                     </div>
                 </div>
             </div>
@@ -70,7 +79,8 @@ export const ProfilePanel = ({ user, dispatch }: Props) => {
                         onClick={() => {
                             updatePhoto();
                         }}
-                        className='mt-3 w-full bg-rose-500 text py-1 px-4 rounded-lg focus:outline focus:outline-1 focus:outline-white'>
+                        disabled={pictureSubmitDisabled}
+                        className='mt-3 w-full bg-rose-500 disabled:bg-rose-800 text py-1 px-4 rounded-lg focus:outline focus:outline-1 focus:outline-white'>
                         Submit
                     </button>
                 </div>

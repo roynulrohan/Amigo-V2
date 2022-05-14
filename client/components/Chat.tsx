@@ -188,7 +188,7 @@ export const Chat = () => {
                         <form className='relative h-full w-full lg:w-2/3 ' onSubmit={sendMessage}>
                             <button
                                 disabled={sendDisabled || inputText.trim() === ''}
-                                className='bg-pink-600 text absolute inset-y-0 right-0 p-2 px-4 m-2 rounded-full'
+                                className='bg-pink-600 disabled:bg-pink-800 disabled:text-gray-400 transition-all duration-200 absolute inset-y-0 right-0 p-2 px-4 m-2 rounded-full'
                                 type='submit'>
                                 <svg xmlns='http://www.w3.org/2000/svg' width='20' height='20' fill='currentColor' className='bi bi-send' viewBox='0 0 16 16'>
                                     <path d='M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576 6.636 10.07Zm6.787-8.201L1.591 6.602l4.339 2.76 7.494-7.493Z' />

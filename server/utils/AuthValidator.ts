@@ -11,7 +11,7 @@ export const validateRegisterInput = (username, password, confirmPassword) => {
 
     if (password.trim() === '') {
         errors = 'Password must not be empty.';
-    } else if (password !== confirmPassword) {
+    } else if (password.trim() !== confirmPassword.trim()) {
         errors = 'Passwords must match.';
     }
 

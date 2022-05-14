@@ -28,7 +28,7 @@ export const RecentCard = ({ conversation, status, dispatch }: Props) => {
             onClick={() => {
                 dispatch({ type: CURRENT_CONVERSATION, payload: conversation });
             }}
-            className='bg-darkest flex items-center rounded-xl shadow-lg max-h-[80px] overflow-hidden cursor-pointer mb-3'>
+            className='bg-darkest hover:bg-dark transition-all flex items-center rounded-xl shadow-lg max-h-[80px] overflow-hidden cursor-pointer mb-3'>
             <div className='relative w-[80px] h-[80px]'>
                 {!photoLoading && photoData && (
                     <img src={photoData.getPhoto ? photoData.getPhoto : '/images/cat.png'} alt='' className='w-full h-full object-cover rounded-l-xl' />

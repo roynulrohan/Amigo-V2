@@ -35,7 +35,7 @@ const Home: NextPage = () => {
         if (!localProfile) {
             router.push('/auth');
         }
-    }, [auth?.user?.username]);
+    }, [auth?.user?.username, router]);
 
     return (
         <>

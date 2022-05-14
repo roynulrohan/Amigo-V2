@@ -130,11 +130,11 @@ export const UserResolver = {
 
             const senderUser: any = await User.findById(authResult.userId);
 
-            if (senderUser.username === contact) {
+            if (senderUser.username === contact.trim()) {
                 throw new UserInputError('Cannot add self as contact');
             }
 
-            const contactExists: any = await User.findOne({ username: contact });
+            const contactExists: any = await User.findOne({ username: contact.trim() });
 
             if (!contactExists) {
                 throw new UserInputError('User does not exist');
@@ -142,7 +142,7 @@ export const UserResolver = {
 
             const updatedContacts = await User.findOneAndUpdate(
                 { username: senderUser.username },
-                { $addToSet: { contacts: contact } },
+                { $addToSet: { contacts: contact.trim() } },
                 { new: true, upsert: true }
             );
 
@@ -163,11 +163,11 @@ export const UserResolver = {
 
             const senderUser: any = await User.findById(authResult.userId);
 
-            if (senderUser.username === contact) {
+            if (senderUser.username === contact.trim()) {
                 throw new UserInputError('Cannot delete self as contact');
             }
 
-            const contactExists: any = await User.findOne({ username: contact });
+            const contactExists: any = await User.findOne({ username: contact.trim() });
 
             if (!contactExists) {
                 throw new UserInputError('User does not exist');
@@ -175,7 +175,7 @@ export const UserResolver = {
 
             const updatedContacts = await User.findOneAndUpdate(
                 { username: senderUser.username },
-                { $pull: { contacts: contact } },
+                { $pull: { contacts: contact.trim() } },
                 { new: true, upsert: true }
             );
 

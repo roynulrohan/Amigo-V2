@@ -77,7 +77,7 @@ export const ContactCard = ({ contact, status, dispatch }: Props) => {
                         setDropdownHidden(true);
                     }}
                     className='fixed h-screen w-screen top-0 left-0 bg-transparent z-40'></div>
-                <div hidden={dropdownHidden} className='z-50 mt-14 fixed divide-y divide-gray-100 rounded-lg w-44 bg-zinc-700 shadow-lg'>
+                <div hidden={dropdownHidden} className='z-50 mt-14 fixed divide-y divide-gray-100 rounded-lg w-44 bg-zinc-700'>
                     <ul className='py-1 text-sm text-gray-700 dark:text-gray-200' aria-labelledby='dropdownDefault'>
                         <li>
                             <button
