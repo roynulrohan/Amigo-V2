@@ -1,0 +1,12 @@
+**/node_modules
+node_modules
+.dockerignore
+Dockerfile
+docker-compose.yml
+**/.env
+.env
+**/.git
+.git
+/misc
+out
+.next

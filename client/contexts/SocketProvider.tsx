@@ -17,7 +17,7 @@ export function SocketProvider({ id, status, children }: Params) {
     const [socket, setSocket] = useState<Socket>();
 
     useEffect(() => {
-        const newSocket = io('http://localhost:4000', {
+        const newSocket = io(process.env.NEXT_PUBLIC_API_URL || window.location.origin, {
             query: { id, status },
             timeout: 10001,
             transports: ['websocket'],

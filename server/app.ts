@@ -23,12 +23,6 @@ app.use(express.static(path.join(__dirname, '../client/build')));
 
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
-app.get('*', (req, res) => {
-    if (req.path !== '/graphql') {
-        console.log(req.protocol + '://' + req.get('host') + req.originalUrl);
-        res.sendFile(path.join(__dirname, '../client/build/index.html'));
-    }
-});
 
 server.start().then(() => server.applyMiddleware({ app }));
 
@@ -43,7 +37,7 @@ mongoose
         console.log('Mongo connection established');
     });
 
-const port = process.env.PORT || 443;
+const port = process.env.PORT || 4000;
 
 const http = app.listen(port, () => console.log(`Server is running at http://localhost:${port}`));
 
